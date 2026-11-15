@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'none'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>JaarZon</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="daylength.js" defer></script>
+</head>
+<body>
+<main data-daylength-widget>
+  <header><div><p class="eyebrow">PUTTERSHOEK · OFFLINE</p><h1>JaarZon</h1></div><span class="sun" aria-hidden="true">☀</span></header>
+  <section class="card chart-card" aria-label="Daglengte in het kalenderjaar">
+    <div class="chart-heading"><h2 data-daylength-year>Het jaar in daglicht</h2><button type="button" data-daylength-today>Vandaag</button></div>
+    <svg viewBox="0 0 360 228" role="img" aria-label="Daglengte gedurende het kalenderjaar" data-daylength-chart></svg>
+    <div class="legend"><span class="today-key"></span> Vandaag <span class="selected-key"></span> Geselecteerde datum</div>
+    <p class="hint">Raak de grafiek aan of sleep om een dag te kiezen.</p>
+  </section>
+  <section class="card details" aria-live="polite" aria-atomic="true">
+    <p class="eyebrow">GESELECTEERDE DAG</p>
+    <h2 data-daylength-date></h2>
+    <p class="duration" data-daylength-value></p>
+    <p class="change" data-daylength-change></p>
+    <p data-daylength-trend></p>
+    <p class="times" data-daylength-times></p>
+  </section>
+  <section class="extremes" aria-label="Langste en kortste dag"><div><p class="eyebrow">LANGSTE DAG</p><p data-daylength-longest></p></div><div><p class="eyebrow">KORTSTE DAG</p><p data-daylength-shortest></p></div></section>
+  <footer>Berekend voor Puttershoek · Nederlandse tijd<br>Vrije horizon en gemiddelde atmosferische refractie.</footer>
+</main>
+</body>
+</html>

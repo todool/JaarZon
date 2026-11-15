@@ -1,0 +1,33 @@
+:root { color-scheme: light; font-family: system-ui, sans-serif; color: #203c35; background: #f5f3ec; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 600px; margin: auto; padding: 20px 14px 24px; }
+header { display: flex; align-items: center; justify-content: space-between; padding: 0 6px 18px; }
+h1 { margin: 2px 0 0; font-size: 34px; letter-spacing: -1px; }
+h2 { margin: 0; font-size: 18px; }
+p { margin: 8px 0; }
+.eyebrow { font-size: 10px; letter-spacing: 1.4px; font-weight: 700; color: #516a60; }
+.sun { font-size: 48px; color: #a36c09; line-height: 1; }
+.card { background: #fffef9; border: 1px solid #dedfd3; border-radius: 20px; margin-bottom: 14px; }
+.chart-card { padding: 14px 8px 10px; }
+.chart-heading { display: flex; align-items: center; justify-content: space-between; padding: 0 8px 8px; gap: 8px; }
+button { font: inherit; font-size: 14px; min-height: 44px; padding: 8px 14px; border: 0; border-radius: 12px; color: white; background: #17614e; }
+button:focus-visible, svg:focus-visible { outline: 3px solid #b77b16; outline-offset: 3px; }
+svg { display: block; width: 100%; height: auto; touch-action: pan-y; }
+svg text { font-size: 10px; fill: #53675e; }
+.daylength-grid { stroke: #e1e5db; stroke-width: .7; }
+.daylength-curve { fill: none; stroke: #17614e; stroke-width: 2.4; stroke-linejoin: round; }
+.daylength-today { stroke: #bc4e2f; stroke-width: 2.2; }
+.daylength-selected { stroke: #536b9d; stroke-width: 1.3; stroke-dasharray: 3 3; }
+.daylength-dot { fill: #17614e; stroke: #fffef9; stroke-width: 1.5; }
+.legend { display: flex; justify-content: center; align-items: center; gap: 6px; font-size: 11px; flex-wrap: wrap; }
+.today-key { height: 14px; border-left: 2px solid #bc4e2f; }
+.selected-key { height: 14px; border-left: 2px dashed #536b9d; margin-left: 12px; }
+.hint { color: #596d63; text-align: center; font-size: 11px; margin-top: 10px; }
+.details { padding: 16px 20px; }
+.duration { font-size: 44px; line-height: 1.15; font-weight: 650; letter-spacing: -1.5px; font-variant-numeric: tabular-nums; margin: 12px 0; }
+.change { font-weight: 650; color: #17614e; }
+.times { border-top: 1px solid #e1e5db; padding-top: 12px; margin-top: 14px; font-size: 13px; }
+.extremes { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 2px 8px; font-size: 13px; }
+footer { font-size: 11px; line-height: 1.6; color: #617168; margin: 20px 8px 0; }
+@media (max-width: 350px) { main { padding: 12px 8px; } .chart-heading h2 { font-size: 16px; } .duration { font-size: 38px; } }
