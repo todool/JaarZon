@@ -58,8 +58,32 @@
         const rounded = Math.round(minutes);
         return `${Math.floor(rounded / 60)}u ${String(rounded % 60).padStart(2, "0")}m`;
     }
+    // Same Meeus coordinates and iteration as sunrise/set, now at geometric
+    // solar-centre altitudes -4° and +6°, without the -0.833° sunrise correction.
+    // Optional coordinates are for boundary tests; the UI always uses Puttershoek.
+    function goldenHour(date, latitude = 51.8, longitude = 4.57) {
+        function crossing(altitude, sign) {
+            let minutes = 720 - 4 * longitude + sign * 360;
+            for (let i = 0; i < 4; i++) {
+                const {declination: d, eq} = coordinates(date + minutes * 60000);
+                const cosine = (Math.sin(altitude * RAD) - Math.sin(latitude * RAD) * Math.sin(d))
+                    / (Math.cos(latitude * RAD) * Math.cos(d));
+                if (!Number.isFinite(cosine) || cosine < -1 || cosine > 1) return null;
+                minutes = 720 - 4 * longitude - eq + sign * 4 * Math.acos(cosine) / RAD;
+            }
+            const instant = date + minutes * 60000;
+            return Number.isFinite(instant) && today(new Date(instant)) === date ? instant : null;
+        }
+        return {morningStart: crossing(-4, -1), morningEnd: crossing(6, -1),
+            eveningStart: crossing(6, 1), eveningEnd: crossing(-4, 1)};
+    }
+    function goldenRange(start, end) {
+        return start === null || end === null
+            ? "Niet beschikbaar: een grensmoment ontbreekt op deze datum."
+            : `${clock.format(start)} – ${clock.format(end)}`;
+    }
     // CommonJS export allows the actual browser calculation to be tested without dependencies.
-    if (typeof module !== "undefined" && module.exports) module.exports = {today, solarDay, yearDays, duration, clock};
+    if (typeof module !== "undefined" && module.exports) module.exports = {today, solarDay, yearDays, duration, clock, goldenHour, goldenRange};
     if (typeof document === "undefined") return;
     document.addEventListener("DOMContentLoaded", () => {
         const widget = document.querySelector("[data-daylength-widget]");
@@ -86,6 +110,9 @@
             field("change").textContent = `${deltaSeconds < 0 ? '−' : deltaSeconds > 0 ? '+' : ''}${difference} t.o.v. de vorige dag`;
             field("trend").textContent = deltaSeconds > 0 ? "De dagen worden langer" : deltaSeconds < 0 ? "De dagen worden korter" : "De daglengte blijft vrijwel gelijk";
             field("times").textContent = `Zonsopkomst ${clock.format(day.sunrise)} · Zonsondergang ${clock.format(day.sunset)}`;
+            const golden = goldenHour(day.date);
+            field("golden-morning").textContent = goldenRange(golden.morningStart, golden.morningEnd);
+            field("golden-evening").textContent = goldenRange(golden.eveningStart, golden.eveningEnd);
             selectionLine.setAttribute("x1", x(selected));
             selectionLine.setAttribute("x2", x(selected));
             selectionDot.setAttribute("cx", x(selected));

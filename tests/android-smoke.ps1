@@ -60,6 +60,13 @@ $decemberX = $left + $width - 2
 $middleX = [int]($left + $width / 2)
 Invoke-Adb shell input swipe $middleX $y $decemberX $y 800
 $tree = Read-Ui
+# Android may deliver the last move before the finger-up endpoint. Verify the
+# month reached by dragging, then select the exact year-end with a tap.
+if (-not ($tree.SelectNodes('//node') | Where-Object { $_.text -match "^\d+ december $year$" })) {
+    throw 'Slepen naar december heeft de geselecteerde datum niet bijgewerkt.'
+}
+Invoke-Adb shell input tap $decemberX $y
+$tree = Read-Ui
 Require-Text $tree "31 december $year" | Out-Null
 Require-Text $tree 'De dagen worden langer' | Out-Null
 Invoke-Adb shell input tap ([int](($buttonBounds[0] + $buttonBounds[2]) / 2)) ([int](($buttonBounds[1] + $buttonBounds[3]) / 2))
@@ -71,4 +78,16 @@ $tree = Read-Ui
 Require-Text $tree $todayText | Out-Null
 Invoke-Adb shell screencap -p /sdcard/jaarzon-smoke.png
 Invoke-Adb pull /sdcard/jaarzon-smoke.png "$outputPath\jaarzon.png"
-Write-Output 'GESLAAGD: offline starten, datum aanraken, slepen, Vandaag en hervatten in echte Android WebView.'
+Invoke-Adb shell input swipe 540 1900 540 1100 600
+$tree = Read-Ui
+Require-Text $tree 'Golden Hour' | Out-Null
+$isoDate = $date.ToString('yyyy-MM-dd')
+$expectedGolden = & node -e "const m=require('./app/src/main/assets/daylength.js');const g=m.goldenHour(Date.parse(process.argv[1]));console.log(JSON.stringify([m.goldenRange(g.morningStart,g.morningEnd),m.goldenRange(g.eveningStart,g.eveningEnd)]));" $isoDate
+if ($LASTEXITCODE -ne 0) { throw 'Golden Hour-referentieberekening mislukt.' }
+$screenText = ($tree.SelectNodes('//node') | ForEach-Object { $_.text }) -join ' '
+foreach ($range in ($expectedGolden | ConvertFrom-Json)) {
+    if (-not $screenText.Contains($range)) { throw "Golden Hour-tijd ontbreekt in WebView: $range" }
+}
+Invoke-Adb shell screencap -p /sdcard/jaarzon-golden.png
+Invoke-Adb pull /sdcard/jaarzon-golden.png "$outputPath\golden-hour.png"
+Write-Output 'GESLAAGD: offline starten, datum aanraken, slepen, Vandaag, hervatten en Golden Hour in echte Android WebView.'

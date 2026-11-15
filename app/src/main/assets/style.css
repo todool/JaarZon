@@ -29,5 +29,8 @@ svg text { font-size: 10px; fill: #53675e; }
 .change { font-weight: 650; color: #17614e; }
 .times { border-top: 1px solid #e1e5db; padding-top: 12px; margin-top: 14px; font-size: 13px; }
 .extremes { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 2px 8px; font-size: 13px; }
+.golden-hour { border-top: 1px solid #e1e5db; padding-top: 14px; margin-top: 14px; font-size: 14px; }
+.golden-hour h2 { margin-bottom: 10px; }
+.golden-hour span { font-variant-numeric: tabular-nums; }
 footer { font-size: 11px; line-height: 1.6; color: #617168; margin: 20px 8px 0; }
 @media (max-width: 350px) { main { padding: 12px 8px; } .chart-heading h2 { font-size: 16px; } .duration { font-size: 38px; } }

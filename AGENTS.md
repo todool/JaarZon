@@ -64,10 +64,11 @@ werken of aantoonbaar verouderd zijn.
 
 ## Ontwikkeling, tests en builds
 
-- Java 17-broncode, Android Gradle Plugin 8.13.2, Gradle-wrapper 8.13,
-  compile/target SDK 36, Build Tools 35.0.0 en min SDK 26. Gebruik de wrapper.
-  Deze stabiele AGP-lijn past bij de aanwezige Android Studio Otter 2 (2025.2.2).
-  JDK 17 of 21; lokaal is Android Studio JBR 21.0.8 beschikbaar.
+- Java 17-broncode, Android Gradle Plugin 9.5.1, Gradle-wrapper 9.6.0,
+  compile/target SDK 36 en min SDK 26. Gebruik de wrapper. De bestaande
+  Android Studio-upgradeconfiguratie is behouden en de 2.1-build slaagt hiermee.
+  AGP gebruikt Build Tools 36.0.0 en waarschuwt dat de expliciete 35.0.0-instelling
+  wordt genegeerd. `gradle/gradle-daemon-jvm.properties` selecteert JetBrains JDK 21.
 - Voer `.\test.ps1` uit voor de dependencyvrije Node.js-tests (Node 24),
   JavaScript-syntax en `git diff --check`. De astronomische functies uit Cockpit
   zijn ongewijzigd overgenomen; behoud hun nauwkeurigheid.

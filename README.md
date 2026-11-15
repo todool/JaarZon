@@ -1,4 +1,4 @@
-# JaarZon 2.0
+# JaarZon 2.1
 
 Zelfstandige offline Android-app voor de daglengte in Puttershoek. Java met een
 lokale WebView; geen runtime-dependencies, permissies, API's of services.
@@ -14,6 +14,14 @@ Daglengte, verschil met de vorige dag (minuten/seconden), richting van de
 verandering, opkomst/ondergang en langste/kortste dag worden lokaal berekend.
 De kalender ververst bij middernacht en bij terugkeer naar de app.
 
+Onder de daggegevens staat Golden Hour voor de geselecteerde datum: ochtend van
+−4° naar +6° zonshoogte en avond van +6° naar −4°. De uitbreiding gebruikt dezelfde
+Meeus-zonnecoördinaten met vier iteraties per grens, voor het geometrische
+zonnemiddelpunt (zonder de opkomstcorrectie van −0.833°). Tijden verschijnen in
+Europe/Amsterdam. Een ontbrekende grens of een grens buiten de geselecteerde
+lokale kalenderdag geeft een melding in plaats van een tijd. De grafiek en
+bestaande daglengteberekening zijn niet gewijzigd.
+
 De NOAA/Meeus-berekening is overgenomen uit Cockpit `static/daylength.js`,
 inclusief vier iteraties per zongebeurtenis, coördinaten 51.8°N / 4.57°E en
 zonshoogte −0.833°. De functies voor astronomische berekeningen zijn ongewijzigd.
@@ -23,14 +31,15 @@ dit is geen voorspelling van weersinvloed of lokale obstakels.
 
 ## Ontwikkelen en bouwen
 
-- Android Studio Otter 2 (2025.2.2) of een compatibele nieuwere versie.
-- Android Gradle Plugin 8.13.2, Gradle 8.13; geen dynamische versies.
-- JDK 17 of 21; hier gebruikt: Android Studio JBR 21.0.8.
-- Android SDK Platform 36 en Build Tools 35.0.0.
+- Android Studio met ondersteuning voor de huidige projectconfiguratie.
+- Android Gradle Plugin 9.5.1, Gradle 9.6.0; geen dynamische versies.
+- JetBrains JDK 21 via `gradle/gradle-daemon-jvm.properties`; Java 17-broncode.
+- Android SDK Platform 36 en Build Tools 36.0.0. AGP negeert met een waarschuwing
+  de oudere expliciete Build Tools 35.0.0-instelling.
 - Node.js 24 voor de dependencyvrije JavaScript-tests.
 
-De combinatie volgt de officiële
-[AGP 8.13-compatibiliteitstabel](https://developer.android.com/build/releases/agp-8-13-0-release-notes).
+Dit is de bestaande Android Studio-upgradeconfiguratie waarmee de 2.1-debugbuild
+en lintcontrole succesvol zijn uitgevoerd.
 
 Open deze map in Android Studio en laat Gradle de wrapper gebruiken. Configureer
 het lokale SDK-pad in het genegeerde `local.properties`, of stel ANDROID_HOME in.
@@ -89,6 +98,16 @@ dekken de berekening en DOM-logica; ze vervangen geen echte WebView-/toesteltest
 - De APK heeft volgens `aapt dump permissions` geen Android-permissies.
 - Niet geverifieerd op een fysieke Samsung of op Android 8.0; grotere
   systeemtekst en schermrotatie zijn nog handmatige toestelcontroles.
+
+Golden Hour-uitbreiding: zeven Node-tests geslaagd, inclusief zomer/winter,
+beide DST-overgangen, ontbrekende grenzen en bijwerken van de selectie.
+Debugbuild en lint slagen met de reeds lokaal bijgewerkte buildconfiguratie;
+lint geeft drie versie-/SDK-waarschuwingen en geen fouten. De offline-smoketest
+op Android 16 slaagt inclusief Golden Hour. De sleepcontrole controleert december
+en selecteert daarna 31 december exact met een tik, omdat Android de laatste
+sleepbeweging vóór het loslaten kan bemonsteren. Screenshot:
+`app/build/smoke/golden-hour.png`. De gebruiker heeft daarna bevestigd dat Golden
+Hour zichtbaar is op de Samsung met versie 2.1 (versionCode 2).
 
 ## WebView-beperking
 
