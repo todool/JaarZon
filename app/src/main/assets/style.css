@@ -32,5 +32,28 @@ svg text { font-size: 10px; fill: #53675e; }
 .golden-hour { border-top: 1px solid #e1e5db; padding-top: 14px; margin-top: 14px; font-size: 14px; }
 .golden-hour h2 { margin-bottom: 10px; }
 .golden-hour span { font-variant-numeric: tabular-nums; }
+.daystrip { margin: 0 8px 14px; position: relative; }
+.daystrip-now { position: absolute; top: -3px; left: 0; width: 100%; height: 17px; overflow: visible; pointer-events: none; }
+.daystrip-now[data-visible="false"] { display: none; }
+.daystrip-now-halo { stroke: #fffef9; stroke-width: 3.5px; }
+.daystrip-now-line { stroke: #203c35; stroke-width: 1.5px; }
+.daystrip-bar { height: 14px; border-radius: 7px; overflow: hidden; }
+.daystrip-hours { display: flex; justify-content: space-between; font-size: 10px; line-height: 16px; color: #617168; }
+.daystrip-key { display: flex; justify-content: center; flex-wrap: wrap; gap: 3px 10px; font-size: 10px; line-height: 16px; color: #617168; }
+.daystrip-key span { display: inline-flex; align-items: center; gap: 4px; }
+.daystrip-key i { width: 7px; height: 7px; border-radius: 2px; }
+.daystrip-night { fill: #253953; background: #253953; }
+.daystrip-daylight { fill: #f5df92; background: #f5df92; }
+.daystrip-golden { fill: #e79a42; background: #e79a42; }
+.daystrip-unknown { fill: #d9ddd6; }
+.location-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 6px 14px; font-size: 12px; }
+.location-row p { margin: 3px 0; }
+.location-zone { color: #617168; font-size: 11px; }
+.location-row button { font-size: 22px; padding: 6px 10px; min-width: 44px; flex-shrink: 0; }
 footer { font-size: 11px; line-height: 1.6; color: #617168; margin: 20px 8px 0; }
 @media (max-width: 350px) { main { padding: 12px 8px; } .chart-heading h2 { font-size: 16px; } .duration { font-size: 38px; } }
+
+.language-row { display: flex; justify-content: flex-end; margin: -12px 6px 6px; }
+.language-row button { background: transparent; color: #516a60; font-size: 12px; padding: 4px 8px; }
+.location-row > div { min-width: 0; overflow-wrap: anywhere; }
+.details, .extremes > div { overflow-wrap: break-word; }

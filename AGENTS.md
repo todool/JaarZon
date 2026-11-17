@@ -8,7 +8,24 @@ werken of aantoonbaar verouderd zijn.
 
 - Ontwikkel een zelfstandige Android-app die de daglengte gedurende het
   kalenderjaar interactief weergeeft en volledig offline functioneert.
-- Puttershoek is de standaardlocatie.
+- Amsterdam, Nederland (52.3676, 4.9041; Europe/Amsterdam) is vanaf 2.4 de standaardlocatie.
+- Automatische foregroundlocatie is inmiddels expliciet toegestaan. Gebruik
+  uitsluitend Android LocationManager, coarse/fine-toestemming en een begrensde
+  aanvraag; geen achtergrondlocatie. Vanaf 2.4 is één lokale laatst-bekende
+  locatie (coördinaten, nauwkeurigheid, fixtijd en plaatsnaam) expliciet toegestaan.
+  Die wordt bij terugval altijd als laatst bekend met tijdstempel aangeduid.
+- Vanaf 2.4 is Android Geocoder expliciet toegestaan voor plaatsnamen; de
+  systeemaanbieder mag daarvoor netwerk gebruiken. Geen eigen geocodingserver,
+  eigen netwerkaanroepen of externe tijdzone-API. WebView blijft netwerkloos.
+- Eerste gebruik zonder toestemming: korte uitleg, daarna Androids dialoog.
+  Bij volgende starts geldige toestemming hergebruiken; niet opnieuw vragen
+  na weigering/verlopen toestemming tenzij de gebruiker op vernieuwen tikt.
+- Offline tijdzones: Europees Nederland via de gebundelde Kadaster/PDOK-landgrens
+  (NetherlandsBoundary; bron/licentie in docs/netherlands-boundary.md). Buiten
+  Nederland alleen conservatieve bekende regio's met onzekerheidsmarge.
+  Elders expliciet UTC, nooit blind de toestelzone.
+  Android ZoneRules levert de offsets voor het actuele jaar ±2 jaar aan WebView.
+  Astronomische jaardaglengte blijft onafhankelijk van de gebruikte kloktijdzone.
 - Voorlopige technische voorkeur: Java met een lokale Android WebView en
   HTML/JavaScript/SVG. Bundel de benodigde webbestanden lokaal; vereis geen
   externe API, CDN of netwerkverbinding voor de appfunctionaliteit.
@@ -19,6 +36,21 @@ werken of aantoonbaar verouderd zijn.
 - De bestaande projectmap `C:\Users\tobie\programming_act\JaarZon` blijft de
   definitieve locatie voor de nieuwe Android-app; bouw die niet in een aparte
   projectmap naast JaarZon.
+
+## Talen
+
+- Versie 2.7 Internationalisering gebruikt Nederlands en Engels. Onbekende primaire
+  systeemtaal valt terug op Nederlands. De taal mag locatie/tijdzone nooit wijzigen.
+- Android 13+: LocaleManager en res/xml/locales_config.xml; Android 8–12:
+  lokale taalvoorkeur en een Activity-configuratiecontext. Geen vertaalbibliotheek.
+- Native teksten: res/values/strings.xml en res/values-en/strings.xml.
+  WebView-teksten: assets/i18n.js; HTML gebruikt data-i18n(-aria)-sleutels.
+  Voeg geen zichtbare hardgecodeerde teksten toe. Datumtokens worden als kalenderdatum
+  geformatteerd; kloktijden blijven de geografische Android-tijdzoneregels gebruiken.
+- Taaltest emulator: tests/android-language-smoke.ps1 -Serial emulator-5554
+  (begint met Engelse primaire systeemtaal; wist uitsluitend emulator-appgegevens).
+  Rechtstreekse DOM-controles gebruiken tests/webview-eval.js via een tijdelijk
+  lokaal ADB-debugkanaal. Geen testcode wordt in de APK gebundeld.
 
 ## Bekende bronnen
 
@@ -71,7 +103,16 @@ werken of aantoonbaar verouderd zijn.
   wordt genegeerd. `gradle/gradle-daemon-jvm.properties` selecteert JetBrains JDK 21.
 - Voer `.\test.ps1` uit voor de dependencyvrije Node.js-tests (Node 24),
   JavaScript-syntax en `git diff --check`. De astronomische functies uit Cockpit
-  zijn ongewijzigd overgenomen; behoud hun nauwkeurigheid.
+  behouden hun Meeus-formules; coördinaten en expliciete tijdzone zijn nu per
+  rekenmodel instelbaar. Behoud de nauwkeurigheid en Nederlandse referentietests.
+- `test.ps1` voert ook `tests/location-policy.ps1` uit met de lokale JDK voor
+  leeftijd/nauwkeurigheid, opgeslagen locaties, tijdzones en PlaceLookup-callbacks.
+  Extra emulatorcontrole:
+  `.\tests\android-location-smoke.ps1 -Serial emulator-5554`; uitsluitend
+  fictieve testproviders, toestemming, uitgeschakelde locatie en timeout.
+  Deze test wist alleen in een emulator de JaarZon-appgegevens om eerste gebruik
+  te testen; nooit tegen een fysiek toestel uitvoeren. De gebruiker test APK's
+  daarnaast zelf op Samsung; onderscheid diens bevestigingen van onze controles.
 - Voer `.\build.ps1` uit voor `:app:assembleDebug :app:lintDebug`. Het script
   gebruikt JAVA_HOME of de standaard Android Studio JBR. SDK-configuratie hoort
   in genegeerd `local.properties` of ANDROID_HOME. Een eerste build kan netwerk

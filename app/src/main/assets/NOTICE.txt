@@ -1,0 +1,10 @@
+Nederlandse landsgrensgegevens: Kadaster/PDOK, BRK Bestuurlijke Gebieden,
+Landgebied LND6030 (Nederland), bron bijgewerkt tot 28 januari 2026.
+https://api.pdok.nl/kadaster/brk-bestuurlijke-gebieden/ogc/v1/collections/landgebied
+Licentie: Creative Commons Naamsvermelding 4.0 Internationaal (CC BY 4.0).
+https://creativecommons.org/licenses/by/4.0/
+
+Aanpassingen door JaarZon: uitsluitend Europees Nederland geselecteerd,
+coördinaten afgerond op zes decimalen, binair/GZIP/Base64 gecodeerd voor
+offline gebruik. Polygonen en enclavegaten zijn niet vereenvoudigd.
+Geen goedkeuring of ondersteuning door Kadaster/PDOK geïmpliceerd.

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">JaarZon</string>
+    <string name="language_title">Language</string>
+    <string name="language_auto">Automatic (system language)</string>
+    <string name="language_nl">Nederlands</string>
+    <string name="language_en">English</string>
+    <string name="location">Location: %1$s</string>
+    <string name="default_location">Location: Amsterdam, Netherlands (default: %1$s)</string>
+    <string name="previous_location">%1$s (last known: %2$s; %3$s)</string>
+    <string name="zone">Time zone: %1$s</string>
+    <string name="unknown_zone">Time zone: UTC — local time zone unknown offline</string>
+    <string name="permission_title">Location for JaarZon</string>
+    <string name="permission_message">JaarZon uses your location for daylight and local times, only while in use. Android may use an internet connection to find the place name. Without permission, the app uses the last known location or Amsterdam.</string>
+    <string name="continue_label">Continue</string>
+    <string name="not_now">Not now</string>
+    <string name="reason_timeout">no recent location within 10 seconds</string>
+    <string name="reason_disabled">location services disabled</string>
+    <string name="reason_permission">no location permission</string>
+    <string name="reason_searching">finding location, up to 10 seconds</string>
+    <string name="reason_provider">no suitable location provider</string>
+    <string name="reason_revoked">location permission revoked</string>
+    <string name="coordinates">%1$.2f° %2$s, %3$.2f° %4$s</string>
+    <string name="north">N</string>
+    <string name="south">S</string>
+    <string name="east">E</string>
+    <string name="west">W</string>
+</resources>

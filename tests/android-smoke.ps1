@@ -27,6 +27,7 @@ function Bounds($node) {
     return $values
 }
 Invoke-Adb install -r app/build/outputs/apk/debug/app-debug.apk
+if ([int](Invoke-Adb shell getprop ro.build.version.sdk) -ge 33) { Invoke-Adb shell cmd locale set-app-locales nl.jaarzon --locales nl }
 Invoke-Adb shell svc wifi disable
 Invoke-Adb shell svc data disable
 Invoke-Adb shell am force-stop nl.jaarzon
@@ -41,7 +42,12 @@ $culture = [Globalization.CultureInfo]::GetCultureInfo('nl-NL')
 $todayText = $date.ToString('d MMMM yyyy', $culture)
 $year = $date.Year
 Require-Text $tree $todayText | Out-Null
+if (-not ($tree.SelectNodes('//node') | Where-Object { $_.text -like 'Actuele tijd *' })) {
+    throw 'Actuele-tijdmarkering ontbreekt bij vandaag.'
+}
 $button = Require-Text $tree 'Vandaag'
+$bar = $tree.SelectNodes('//node') | Where-Object { $_.text -like "24-uurs daglichtbalk voor $todayText*" } | Select-Object -First 1
+if (-not $bar) { throw '24-uurs daglichtbalk ontbreekt voor vandaag.' }
 $buttonBounds = Bounds $button
 $chart = $tree.SelectNodes('//node') | Where-Object { $_.text -like "Daglengte $year. Rode lijn*" } | Select-Object -First 1
 if (-not $chart) { throw 'Jaargrafiek ontbreekt.' }
@@ -55,6 +61,12 @@ $januaryX = $left + 10
 Invoke-Adb shell input tap $januaryX $y
 $tree = Read-Ui
 Require-Text $tree "1 januari $year" | Out-Null
+if ($todayText -ne "1 januari $year" -and ($tree.SelectNodes('//node') | Where-Object { $_.text -like 'Actuele tijd *' })) {
+    throw 'Actuele-tijdmarkering blijft zichtbaar bij een andere datum.'
+}
+if (-not ($tree.SelectNodes('//node') | Where-Object { $_.text -like "24-uurs daglichtbalk voor 1 januari $year*" })) {
+    throw 'Daglichtbalk is niet bijgewerkt na datumselectie.'
+}
 $decemberX = $left + $width - 2
 # Start inside the plot, away from Android's system back-gesture edge.
 $middleX = [int]($left + $width / 2)
@@ -73,6 +85,12 @@ Invoke-Adb shell input tap ([int](($buttonBounds[0] + $buttonBounds[2]) / 2)) ([
 $tree = Read-Ui
 Require-Text $tree $todayText | Out-Null
 Invoke-Adb shell input keyevent KEYCODE_HOME
+if (-not ($tree.SelectNodes('//node') | Where-Object { $_.text -like 'Actuele tijd *' })) {
+    throw 'Vandaag heeft de tijdmarkering niet hersteld.'
+}
+if (-not ($tree.SelectNodes('//node') | Where-Object { $_.text -like "24-uurs daglichtbalk voor $todayText*" })) {
+    throw 'Vandaag heeft de daglichtbalk niet hersteld.'
+}
 Invoke-Adb shell am start -W -n nl.jaarzon/.MainActivity
 $tree = Read-Ui
 Require-Text $tree $todayText | Out-Null
@@ -90,4 +108,4 @@ foreach ($range in ($expectedGolden | ConvertFrom-Json)) {
 }
 Invoke-Adb shell screencap -p /sdcard/jaarzon-golden.png
 Invoke-Adb pull /sdcard/jaarzon-golden.png "$outputPath\golden-hour.png"
-Write-Output 'GESLAAGD: offline starten, datum aanraken, slepen, Vandaag, hervatten en Golden Hour in echte Android WebView.'
+Write-Output 'GESLAAGD: offline starten, datumselectie, slepen, Vandaag, hervatten, daglichtbalk en Golden Hour in echte Android WebView.'

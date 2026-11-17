@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">JaarZon</string>
+    <string name="language_title">Taal</string>
+    <string name="language_auto">Automatisch (systeemtaal)</string>
+    <string name="language_nl">Nederlands</string>
+    <string name="language_en">English</string>
+    <string name="location">Locatie: %1$s</string>
+    <string name="default_location">Locatie: Amsterdam, Nederland (standaard: %1$s)</string>
+    <string name="previous_location">%1$s (laatst bekend: %2$s; %3$s)</string>
+    <string name="zone">Tijdzone: %1$s</string>
+    <string name="unknown_zone">Tijdzone: UTC — lokale tijdzone offline onbekend</string>
+    <string name="permission_title">Locatie voor JaarZon</string>
+    <string name="permission_message">JaarZon gebruikt je locatie voor daglicht en lokale tijden. Alleen tijdens gebruik. Android kan voor de plaatsnaam een internetverbinding gebruiken. Zonder toestemming werkt de app met de laatst bekende locatie of Amsterdam.</string>
+    <string name="continue_label">Doorgaan</string>
+    <string name="not_now">Niet nu</string>
+    <string name="reason_timeout">geen recente locatie binnen 10 seconden</string>
+    <string name="reason_disabled">locatievoorzieningen uitgeschakeld</string>
+    <string name="reason_permission">geen locatietoestemming</string>
+    <string name="reason_searching">locatie zoeken, maximaal 10 seconden</string>
+    <string name="reason_provider">geen geschikte locatieprovider</string>
+    <string name="reason_revoked">locatietoestemming ingetrokken</string>
+    <string name="coordinates">%1$.2f° %2$s, %3$.2f° %4$s</string>
+    <string name="north">N</string>
+    <string name="south">Z</string>
+    <string name="east">E</string>
+    <string name="west">W</string>
+</resources>
