@@ -25,4 +25,5 @@
     <string name="south">S</string>
     <string name="east">E</string>
     <string name="west">W</string>
+    <string name="privacy_no_browser">No browser is available to open the privacy policy.</string>
 </resources>

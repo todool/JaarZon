@@ -150,6 +150,7 @@ public final class MainActivity extends Activity {
         CookieManager.getInstance().setAcceptCookie(false);
         webView.setWebViewClient(new WebViewClient() {
             @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                if (request.isForMainFrame() && request.getUrl().toString().equals(ORIGIN + "/privacy")) openPrivacyPolicy();
                 if (request.isForMainFrame() && request.getUrl().toString().equals(ORIGIN + "/locate")) locate(true);
                 if (request.isForMainFrame() && "https".equals(request.getUrl().getScheme())
                         && "appassets.androidplatform.net".equals(request.getUrl().getHost()) && "/language".equals(request.getUrl().getPath())) {
@@ -187,6 +188,18 @@ public final class MainActivity extends Activity {
             }
         });
         webView.loadUrl(ORIGIN + "/index.html");
+    }
+
+    private void openPrivacyPolicy() {
+        android.net.Uri uri = android.net.Uri.parse("https://todool.github.io/JaarZon/privacy/"
+                + ("en".equals(language) ? "en.html" : "nl.html"));
+        android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_VIEW, uri)
+                .addCategory(android.content.Intent.CATEGORY_BROWSABLE);
+        try {
+            startActivity(intent);
+        } catch (android.content.ActivityNotFoundException | SecurityException unavailable) {
+            android.widget.Toast.makeText(this, R.string.privacy_no_browser, android.widget.Toast.LENGTH_LONG).show();
+        }
     }
 
     private boolean permitted() {

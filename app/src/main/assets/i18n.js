@@ -3,7 +3,7 @@
     'use strict';
     const messages = {
         nl: {
-            eyebrow:'DAGLICHT · OFFLINE', language:'Taal', automatic:'Automatisch (systeemtaal)', dutch:'Nederlands', english:'English',
+            eyebrow:'DAGLICHT · OFFLINE', privacy:'Privacyverklaring', language:'Taal', automatic:'Automatisch (systeemtaal)', dutch:'Nederlands', english:'English',
             location:'Locatie: {place}', defaultLocation:'Locatie: Amsterdam, Nederland (standaard)', zone:'Tijdzone: {zone}',
             locate:'Locatie vernieuwen', chartTitle:'Daglengte in het kalenderjaar', year:'Daglicht in {year}', today:'Vandaag',
             selectedDate:'Geselecteerde datum', hint:'Raak de grafiek aan of sleep om een dag te kiezen.',
@@ -21,7 +21,7 @@
             chart:'Daglengte {year}. Rode lijn: vandaag. Gebruik de pijltoetsen om een datum te kiezen.'
         },
         en: {
-            eyebrow:'DAYLIGHT · OFFLINE', language:'Language', automatic:'Automatic (system language)', dutch:'Nederlands', english:'English',
+            eyebrow:'DAYLIGHT · OFFLINE', privacy:'Privacy Policy', language:'Language', automatic:'Automatic (system language)', dutch:'Nederlands', english:'English',
             location:'Location: {place}', defaultLocation:'Location: Amsterdam, Netherlands (default)', zone:'Time zone: {zone}',
             locate:'Refresh location', chartTitle:'Day length throughout the calendar year', year:'Daylight in {year}', today:'Today',
             selectedDate:'Selected date', hint:'Touch or drag across the chart to choose a day.',

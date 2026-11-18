@@ -77,6 +77,7 @@ $null=Wait-Web 'Location: Amsterdam, Netherlands \(default: no location permissi
 $null=Wait-Web 'Today'
 Write-Output 'PASS: Engelse systeemtaal, native uitleg en WebView-fallback zonder locatie.'
 Choose 'Language' 'Nederlands' 'Vandaag'
+if ((Web 'document.querySelector(".privacy-link").textContent') -ne 'Privacyverklaring') { throw 'Nederlandse privacylink ontbreekt na taalwisseling.' }
 $null=Wait-Web 'Locatie: Amsterdam, Nederland'
 $null=Web 'document.querySelector("[data-daylength-chart]").dispatchEvent(new KeyboardEvent("keydown",{key:"Home",bubbles:true}))'
 $null=Wait-Web '1 januari \d{4}'
@@ -84,6 +85,7 @@ $duration=Web 'document.querySelector("[data-daylength-value]").textContent'
 $curve=Web 'document.querySelector(".daylength-curve").getAttribute("points")'
 $bar=Web 'document.querySelector("[data-daylength-bar]").innerHTML'
 Choose 'Taal' 'English' '1 January \d{4}'
+if ((Web 'document.querySelector(".privacy-link").textContent') -ne 'Privacy Policy') { throw 'Engelse privacylink ontbreekt na taalwisseling.' }
 $null=Wait-Web 'Sunrise .*Sunset '
 $englishDuration=Web 'document.querySelector("[data-daylength-value]").textContent'
 if ($duration.Replace('u','h') -ne $englishDuration) { throw 'Daglengte veranderde door taalwisseling.' }

@@ -5,6 +5,14 @@ const vm = require('node:vm');
 const {messages, language, translator} = require('../app/src/main/assets/i18n.js');
 const {createAstronomy} = require('../app/src/main/assets/daylength.js');
 
+test('privacy link is a translated, keyboard-accessible local route with no remote WebView navigation', () => {
+    assert.equal(translator('nl')('privacy'),'Privacyverklaring');
+    assert.equal(translator('en')('privacy'),'Privacy Policy');
+    const html=fs.readFileSync('app/src/main/assets/index.html','utf8');
+    assert.match(html,/<a\b[^>]*href="privacy"[^>]*data-i18n="privacy"/);
+    assert.doesNotMatch(html,/<a\b[^>]*target="_blank"/);
+});
+
 test('native resources have matching keys and formats; HTML contains only translation keys', () => {
     const strings = dir => Object.fromEntries([...fs.readFileSync(`app/src/main/res/${dir}/strings.xml`, 'utf8')
         .matchAll(/<string name="([^"]+)">([^<]*)<\/string>/g)].map(m => [m[1],m[2]]));

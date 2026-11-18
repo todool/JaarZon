@@ -25,4 +25,5 @@
     <string name="south">Z</string>
     <string name="east">E</string>
     <string name="west">W</string>
+    <string name="privacy_no_browser">Geen browser beschikbaar om de privacyverklaring te openen.</string>
 </resources>
