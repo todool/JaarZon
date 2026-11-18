@@ -3,6 +3,13 @@ package nl.jaarzon;
 /** Pure acceptance policy; no coordinate storage or network lookup. */
 public final class LocationPolicy {
     private LocationPolicy() { }
+    /** A legacy name belongs only to the exact coordinate pair saved with it. */
+    public static String savedPlace(double latitude, double longitude, double savedLatitude,
+            double savedLongitude, String name) {
+        return Double.isFinite(latitude) && Math.abs(latitude) <= 90
+                && Double.isFinite(longitude) && Math.abs(longitude) <= 180
+                && latitude == savedLatitude && longitude == savedLongitude && name != null ? name : "";
+    }
     public static boolean acceptable(double latitude, double longitude, float accuracy,
             long fixElapsedNanos, long nowElapsedNanos) {
         long age = nowElapsedNanos - fixElapsedNanos;

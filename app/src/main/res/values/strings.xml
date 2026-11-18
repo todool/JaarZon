@@ -11,7 +11,7 @@
     <string name="zone">Tijdzone: %1$s</string>
     <string name="unknown_zone">Tijdzone: UTC — lokale tijdzone offline onbekend</string>
     <string name="permission_title">Locatie voor JaarZon</string>
-    <string name="permission_message">JaarZon gebruikt je locatie voor daglicht en lokale tijden. Alleen tijdens gebruik. Android kan voor de plaatsnaam een internetverbinding gebruiken. Zonder toestemming werkt de app met de laatst bekende locatie of Amsterdam.</string>
+    <string name="permission_message">JaarZon gebruikt je locatie voor daglicht en lokale tijden. Alleen tijdens gebruik. Zonder toestemming werkt de app met de laatst bekende locatie of Amsterdam.</string>
     <string name="continue_label">Doorgaan</string>
     <string name="not_now">Niet nu</string>
     <string name="reason_timeout">geen recente locatie binnen 10 seconden</string>

@@ -17,14 +17,9 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.Geocoder;
-import android.location.Address;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import org.json.JSONArray;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.TimeUnit;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
@@ -86,11 +81,6 @@ public final class MainActivity extends Activity {
     private volatile boolean foreground;
     private JSONObject locationInfo;
     private SharedPreferences saved;
-    private final Handler nameHandler = new Handler(Looper.getMainLooper());
-    private final ThreadPoolExecutor geocodeWorker = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS,
-            new ArrayBlockingQueue<>(1), new ThreadPoolExecutor.DiscardOldestPolicy());
-    private Runnable cancelName = () -> {};
-    private int nameGeneration;
     private boolean explanationShowing;
     private double currentLatitude, currentLongitude;
     private float currentAccuracy;
@@ -160,7 +150,7 @@ public final class MainActivity extends Activity {
                 return true; // No navigation away from the bundled screen.
             }
             @Override public void onPageFinished(WebView view, String url) {
-                if (url.equals(ORIGIN + "/index.html")) { pageReady = true; if (restoreLocation) { restoreLocation = false; renderCurrent(); if (!currentDefault) findPlace(); } else firstLocate(); }
+                if (url.equals(ORIGIN + "/index.html")) { pageReady = true; if (restoreLocation) { restoreLocation = false; renderCurrent(); } else firstLocate(); }
             }
             @Override public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
                 String url = request.getUrl().toString();
@@ -240,12 +230,6 @@ public final class MainActivity extends Activity {
         if (!permitted() && !saved.getBoolean("permission_explained", false)) locate(true);
         else locate(false);
     }
-    private void cancelGeocoding() {
-        nameGeneration++;
-        cancelName.run();
-        nameHandler.removeCallbacksAndMessages(null);
-        geocodeWorker.getQueue().clear();
-    }
     private void showCurrent(boolean previous, int reason) {
         currentDefault = false; currentPrevious = previous; currentReason = reason;
         String coordinates = getString(R.string.coordinates, Math.abs(currentLatitude),
@@ -260,7 +244,6 @@ public final class MainActivity extends Activity {
     }
     private void fallback(int reason) {
         stopLocation();
-        cancelGeocoding();
         double lat = Double.longBitsToDouble(saved.getLong("latitude", Double.doubleToLongBits(Double.NaN)));
         double lon = Double.longBitsToDouble(saved.getLong("longitude", Double.doubleToLongBits(Double.NaN)));
         float accuracy = saved.getFloat("accuracy", Float.NaN);
@@ -284,42 +267,15 @@ public final class MainActivity extends Activity {
         if (!searching || !foreground || fix == null || !fix.hasAccuracy() || !LocationPolicy.acceptable(
                 fix.getLatitude(), fix.getLongitude(), fix.getAccuracy(), fix.getElapsedRealtimeNanos(),
                 SystemClock.elapsedRealtimeNanos())) return false;
-        stopLocation(); cancelGeocoding();
+        stopLocation();
         currentLatitude = fix.getLatitude(); currentLongitude = fix.getLongitude(); currentAccuracy = fix.getAccuracy();
         currentTimestamp = System.currentTimeMillis() - (SystemClock.elapsedRealtimeNanos() - fix.getElapsedRealtimeNanos())/1_000_000;
-        currentPlace = Double.longBitsToDouble(saved.getLong("latitude", 0)) == currentLatitude
-                && Double.longBitsToDouble(saved.getLong("longitude", 0)) == currentLongitude ? saved.getString("place", "") : "";
+        currentPlace = LocationPolicy.savedPlace(currentLatitude, currentLongitude,
+                Double.longBitsToDouble(saved.getLong("latitude", Double.doubleToLongBits(Double.NaN))),
+                Double.longBitsToDouble(saved.getLong("longitude", Double.doubleToLongBits(Double.NaN))),
+                saved.getString("place", ""));
         saveCurrent(); showCurrent(false, 0);
-        findPlace();
         return true;
-    }
-    private void deliverAddresses(List<Address> addresses, PlaceLookup.Result result) {
-        if (addresses == null || addresses.isEmpty() || addresses.get(0) == null) { result.error(); return; }
-        Address address = addresses.get(0);
-        result.success(address.getLocality(), address.getSubAdminArea(), address.getCountryName());
-    }
-    @SuppressWarnings("deprecation")
-    private void findPlace() {
-        if (!foreground || !permitted()) return;
-        final int generation = ++nameGeneration;
-        final double lat = currentLatitude, lon = currentLongitude;
-        cancelName = PlaceLookup.start((latitude, longitude, result) -> geocodeWorker.execute(() -> {
-            try {
-                if (!foreground || !permitted() || !Geocoder.isPresent()) { result.error(); return; }
-                Geocoder coder = new Geocoder(getApplicationContext(), Locale.forLanguageTag(language));
-                if (Build.VERSION.SDK_INT >= 33) {
-                    coder.getFromLocation(latitude, longitude, 1, new Geocoder.GeocodeListener() {
-                        public void onGeocode(List<Address> addresses) { deliverAddresses(addresses, result); }
-                        public void onError(String message) { result.error(); }
-                    });
-                } else deliverAddresses(coder.getFromLocation(latitude, longitude, 1), result);
-            } catch (IOException | RuntimeException error) { result.error(); }
-        }), lat, lon, name -> nameHandler.post(() -> {
-            if (!foreground || !permitted() || generation != nameGeneration) return;
-            nameHandler.removeCallbacksAndMessages(null);
-            if (!name.isEmpty()) { currentPlace = name; saveCurrent(); renderCurrent(); }
-        }));
-        nameHandler.postDelayed(() -> { if (generation == nameGeneration) cancelGeocoding(); }, 5000);
     }
     private void askPermission() {
         if (explanationShowing || !foreground) return;
@@ -388,7 +344,6 @@ public final class MainActivity extends Activity {
     @Override protected void onPause() {
         foreground = false;
         stopLocation();
-        cancelGeocoding();
         if (webView != null) {
             webView.evaluateJavascript("window.dispatchEvent(new CustomEvent('jaarzon-active',{detail:false}))", null);
             webView.onPause();
@@ -399,8 +354,6 @@ public final class MainActivity extends Activity {
     @Override protected void onDestroy() {
         stopLocation();
         handler.removeCallbacksAndMessages(null);
-        cancelGeocoding();
-        geocodeWorker.shutdownNow();
         if (webView != null) { webView.destroy(); webView = null; }
         super.onDestroy();
     }

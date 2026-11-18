@@ -11,7 +11,7 @@
     <string name="zone">Time zone: %1$s</string>
     <string name="unknown_zone">Time zone: UTC — local time zone unknown offline</string>
     <string name="permission_title">Location for JaarZon</string>
-    <string name="permission_message">JaarZon uses your location for daylight and local times, only while in use. Android may use an internet connection to find the place name. Without permission, the app uses the last known location or Amsterdam.</string>
+    <string name="permission_message">JaarZon uses your location for daylight and local times, only while in use. Without permission, the app uses the last known location or Amsterdam.</string>
     <string name="continue_label">Continue</string>
     <string name="not_now">Not now</string>
     <string name="reason_timeout">no recent location within 10 seconds</string>

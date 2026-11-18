@@ -98,3 +98,13 @@ test('English WebView selection, Today, unknown location and missing events stay
     assert.match(field('bar').attributes['aria-label'],/24-hour daylight bar/);
     assert.equal(field('footer').textContent,messages.en.footer);
 });
+
+test('Android location stays local without a place lookup service', () => {
+    const activity=fs.readFileSync('app/src/main/java/nl/jaarzon/MainActivity.java','utf8');
+    assert.doesNotMatch(activity,/Geocoder|getFromLocation|findPlace|geocodeWorker|PlaceLookup/);
+    assert.match(activity,/LocationPolicy\.savedPlace\(currentLatitude, currentLongitude/);
+    assert.match(activity,/requestLocationUpdates/);
+    assert.match(activity,/setBlockNetworkLoads\(true\)/);
+    const manifest=fs.readFileSync('app/src/main/AndroidManifest.xml','utf8');
+    assert.doesNotMatch(manifest,/android.permission.INTERNET/);
+});

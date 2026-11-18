@@ -1,5 +1,4 @@
 import nl.jaarzon.LocationPolicy;
-import nl.jaarzon.PlaceLookup;
 
 public class LocationPolicyTest {
     static int checks;
@@ -64,21 +63,13 @@ public class LocationPolicyTest {
                 }
             }
         }
-        java.util.List<String> names = new java.util.ArrayList<>();
-        PlaceLookup.start((lat,lon,result) -> result.success("Maastricht", "Limburg", "Nederland"),50,5,names::add);
-        check(names.remove(0).equals("Maastricht, Nederland"));
-        PlaceLookup.start((lat,lon,result) -> result.success(null, null, "Nederland"),50,5,names::add);
-        check(names.remove(0).isEmpty());
-        PlaceLookup.start((lat,lon,result) -> result.error(),50,5,names::add);
-        check(names.remove(0).isEmpty());
-        PlaceLookup.start((lat,lon,result) -> { throw new IllegalStateException("Geocoder unavailable"); },50,5,names::add);
-        check(names.remove(0).isEmpty());
-        PlaceLookup.Result[] pending = new PlaceLookup.Result[1];
-        Runnable cancel = PlaceLookup.start((lat,lon,result) -> pending[0] = result,50,5,names::add);
-        cancel.run(); pending[0].success("Oud resultaat",null,null);
-        check(names.isEmpty());
-        PlaceLookup.start((lat,lon,result) -> { result.success("Londen",null,"Verenigd Koninkrijk"); result.error(); },50,5,names::add);
-        check(names.size() == 1); names.clear();
-        System.out.println("LocationPolicy/PlaceLookup: " + checks + " controles geslaagd.");
+        check(LocationPolicy.savedPlace(50,5,50,5,"Maastricht").equals("Maastricht"));
+        check(LocationPolicy.savedPlace(51,5,50,5,"Maastricht").isEmpty());
+        check(LocationPolicy.savedPlace(50,6,50,5,"Maastricht").isEmpty());
+        check(LocationPolicy.savedPlace(50,5,Double.NaN,5,"Maastricht").isEmpty());
+        check(LocationPolicy.savedPlace(Double.NaN,5,Double.NaN,5,"Maastricht").isEmpty());
+        check(LocationPolicy.savedPlace(50,5,50,5,null).isEmpty());
+        check(LocationPolicy.savedPlace(50,5,50,5,"").isEmpty());
+        System.out.println("LocationPolicy: " + checks + " controles geslaagd.");
     }
 }

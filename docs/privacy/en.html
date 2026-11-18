@@ -35,15 +35,15 @@
     <h1>Privacy policy</h1>
     <p class="meta">For JaarZon 2.7 · Last updated: <time datetime="2026-11-18">18 November 2026</time></p>
   </header>
-  <aside class="draft" aria-label="At a glance"><strong>Your privacy in JaarZon.</strong> Solar calculations take place locally. Location permission is optional; Android system services may use network services to find a place name. Below we explain what the app stores and how you can delete it.</aside>
+  <aside class="draft" aria-label="At a glance"><strong>Your privacy in JaarZon.</strong> Solar calculations take place locally. Location permission is optional; place names are not requested online. Below we explain what the app stores and how you can delete it.</aside>
   <section id="about">
     <h2>1. About JaarZon</h2>
     <p>JaarZon is developed by <strong>Tobie Doolaard</strong>, a private individual using the developer name <strong>Tobie Apps</strong>. The app calculates day length, sunrise, sunset and Golden Hour for a location. These calculations, charts and time zone calculations take place on your device and work without an internet connection.</p>
-    <p>This policy describes the current app. Finding place names through Android system services and visiting this web page are separate from the offline calculations.</p>
+    <p>This policy describes the current app. Visiting this web page is separate from the offline calculations.</p>
   </section>
   <section id="location">
     <h2>2. Location and your choice</h2>
-    <p>JaarZon can ask Android for an approximate or precise location. The coordinates are used to calculate daylight information and identify the time zone where it can be recognised offline. Location data is also passed to Android Geocoder to look up a place name.</p>
+    <p>JaarZon can ask Android for an approximate or precise location. The coordinates are used to calculate daylight information and identify the time zone where it can be recognised offline. JaarZon does not pass coordinates on to request a place name.</p>
     <p>Location permission is optional. You can choose approximate location, deny permission or revoke it later in Android’s app settings. Without a new location, JaarZon uses a usable last known location, or otherwise <strong>Amsterdam, Netherlands</strong> as the default.</p>
     <p>The app requests location only while in use, with a bounded request of about ten seconds. Its own location request stops when the app is paused. JaarZon does not request background location permission and has no background location service.</p>
   </section>
@@ -51,7 +51,7 @@
     <h2>3. Data processed and stored by the app</h2>
     <ul>
       <li><strong>One last known location:</strong> latitude, longitude, reported accuracy and the time of the location fix.</li>
-      <li><strong>A place name, if available:</strong> a locality or area name and country from the Geocoder response. The app does not store a full street address from that response.</li>
+      <li><strong>A previously stored place name, if available:</strong> a locality or area name and country from an older app version. This name is used only for the same stored coordinates. For other coordinates JaarZon displays the coordinates; the app does not request new place names.</li>
       <li><strong>Preferences:</strong> language choice and a flag recording that the location explanation has been shown. On recent Android versions, Android manages the app language preference.</li>
       <li><strong>Temporary screen state:</strong> information such as the selected date and current location may be retained by Android when the screen is recreated.</li>
     </ul>
@@ -66,15 +66,15 @@
   </section>
   <section id="system-services">
     <h2>5. Android system services and possible external processing</h2>
-    <p>JaarZon uses Android LocationManager for location data and Android Geocoder for place names. Latitude and longitude are passed to Geocoder, together with the selected language and a request for no more than one result.</p>
-    <p>Depending on your Android device and system provider, Geocoder may use external network services. This may involve processing coordinates outside your device. JaarZon has no control over this possible processing by the system provider. The JaarZon source code cannot establish which provider, servers, countries, additional data, security measures or retention periods are involved. Android’s location services also operate according to your device and system settings.</p>
-    <p>The app itself has no internet permission, but this does not rule out network access by separate Android system services. JaarZon has no backend or direct network requests of its own for this data. Daylight calculations remain available if place-name lookup fails.</p>
+    <p>JaarZon uses Android LocationManager for automatic location, with your permission and only while in use. The app no longer calls Android Geocoder and has no server or external requests of its own for place-name lookup.</p>
+    <p>Depending on your device, system provider and settings, Android location services may use network services. JaarZon cannot establish or guarantee which data these services process, retain or delete externally. JaarZon's lack of internet permission does not rule out network access by separate system services.</p>
+    <p>Astronomical calculations and time zone identification take place locally. The default location is Amsterdam, Netherlands. Previously stored place names may originate from an older app version that used Geocoder; this change does not delete any data processed externally at that time.</p>
   </section>
   <section id="security">
     <h2>6. Security and other data flows</h2>
     <p>The app uses private Android app storage. Android Auto Backup is disabled; the configured transfer rules also exclude app data from cloud backup and device migration. This describes the app configuration, not the behaviour of separate system providers.</p>
     <p>The local WebView blocks network traffic and loads only bundled files. The current app contains no advertising, analytics, tracking libraries, accounts or upload features of its own. No app-written location logging statements were found in the app code. This does not describe logs maintained by Android or its providers.</p>
-    <p>We make no unverified promise about encryption, storage or onward disclosure by a Geocoder or location provider.</p>
+    <p>We make no unverified promise about encryption, storage or onward disclosure by an Android location provider.</p>
   </section>
   <section id="support">
     <h2>7. Support messages</h2>
