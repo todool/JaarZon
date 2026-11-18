@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="JaarZon privacy policy: location data, local storage, system services and support from Tobie Apps.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+  <title>Privacy policy · JaarZon</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; color: #203c35; background: #f5f3ec; }
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.65; }
+    main { max-width: 820px; margin: auto; padding: 32px 20px 48px; }
+    header { margin-bottom: 24px; }
+    .brand { color: #516a60; font-size: .85rem; letter-spacing: .1em; font-weight: 700; }
+    h1 { margin: 8px 0; font-size: clamp(1.8rem, 5vw, 2.6rem); line-height: 1.2; }
+    h2 { font-size: 1.2rem; line-height: 1.4; margin-top: 0; }
+    p { margin: .75em 0; }
+    a { color: #17614e; text-underline-offset: .18em; }
+    a:focus-visible { outline: 3px solid #b77b16; outline-offset: 3px; }
+    section, .draft { background: #fffef9; border: 1px solid #dedfd3; border-radius: 18px; padding: 22px; margin: 16px 0; overflow-wrap: anywhere; }
+    .draft { border-left: 5px solid #b77b16; }
+    .meta, footer { color: #516a60; font-size: .9rem; }
+    ul, ol { padding-left: 1.4rem; }
+    li + li { margin-top: .4rem; }
+    .contact { font-weight: 700; }
+    @media (max-width: 400px) { main { padding: 20px 12px 32px; } section, .draft { padding: 18px; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="brand">JaarZon · Tobie Apps</div>
+    <nav aria-label="Language"><a href="nl.html" lang="nl" hreflang="nl">Lees in het Nederlands</a></nav>
+    <h1>Privacy policy</h1>
+    <p class="meta">For JaarZon 2.7 · Last updated: <time datetime="2026-11-18">18 November 2026</time></p>
+  </header>
+  <aside class="draft" aria-label="At a glance"><strong>Your privacy in JaarZon.</strong> Solar calculations take place locally. Location permission is optional; Android system services may use network services to find a place name. Below we explain what the app stores and how you can delete it.</aside>
+  <section id="about">
+    <h2>1. About JaarZon</h2>
+    <p>JaarZon is developed by <strong>Tobie Doolaard</strong>, a private individual using the developer name <strong>Tobie Apps</strong>. The app calculates day length, sunrise, sunset and Golden Hour for a location. These calculations, charts and time zone calculations take place on your device and work without an internet connection.</p>
+    <p>This policy describes the current app. Finding place names through Android system services and visiting this web page are separate from the offline calculations.</p>
+  </section>
+  <section id="location">
+    <h2>2. Location and your choice</h2>
+    <p>JaarZon can ask Android for an approximate or precise location. The coordinates are used to calculate daylight information and identify the time zone where it can be recognised offline. Location data is also passed to Android Geocoder to look up a place name.</p>
+    <p>Location permission is optional. You can choose approximate location, deny permission or revoke it later in Android’s app settings. Without a new location, JaarZon uses a usable last known location, or otherwise <strong>Amsterdam, Netherlands</strong> as the default.</p>
+    <p>The app requests location only while in use, with a bounded request of about ten seconds. Its own location request stops when the app is paused. JaarZon does not request background location permission and has no background location service.</p>
+  </section>
+  <section id="storage">
+    <h2>3. Data processed and stored by the app</h2>
+    <ul>
+      <li><strong>One last known location:</strong> latitude, longitude, reported accuracy and the time of the location fix.</li>
+      <li><strong>A place name, if available:</strong> a locality or area name and country from the Geocoder response. The app does not store a full street address from that response.</li>
+      <li><strong>Preferences:</strong> language choice and a flag recording that the location explanation has been shown. On recent Android versions, Android manages the app language preference.</li>
+      <li><strong>Temporary screen state:</strong> information such as the selected date and current location may be retained by Android when the screen is recreated.</li>
+    </ul>
+    <p>The app record is held in private local app storage. A newly accepted location replaces the previous location record; the app does not maintain a route or location history. Displayed coordinates may be rounded; stored coordinates are not rounded in the same way.</p>
+  </section>
+  <section id="retention">
+    <h2>4. Retention and deletion</h2>
+    <p>The stored last known location has no automatic expiry date. It may remain until replaced by a new location or until you delete the app data. The language preference and location explanation flag remain locally until changed or removed.</p>
+    <p><strong>Revoking location permission does not delete previously stored data.</strong> The app may still use the saved location as ‘last known’, displaying the time of the fix.</p>
+    <p>You can delete local app data through <strong>Android Settings → Apps → JaarZon → Storage → Clear data / Clear storage</strong>, or by uninstalling the app. Menu names vary by device. Clearing the cache alone is not sufficient. You can also change Android’s own app language preference in Android’s language settings.</p>
+    <p>This does not necessarily delete data already processed by a system provider. The app cannot guarantee those providers’ retention periods or deletion options.</p>
+  </section>
+  <section id="system-services">
+    <h2>5. Android system services and possible external processing</h2>
+    <p>JaarZon uses Android LocationManager for location data and Android Geocoder for place names. Latitude and longitude are passed to Geocoder, together with the selected language and a request for no more than one result.</p>
+    <p>Depending on your Android device and system provider, Geocoder may use external network services. This may involve processing coordinates outside your device. JaarZon has no control over this possible processing by the system provider. The JaarZon source code cannot establish which provider, servers, countries, additional data, security measures or retention periods are involved. Android’s location services also operate according to your device and system settings.</p>
+    <p>The app itself has no internet permission, but this does not rule out network access by separate Android system services. JaarZon has no backend or direct network requests of its own for this data. Daylight calculations remain available if place-name lookup fails.</p>
+  </section>
+  <section id="security">
+    <h2>6. Security and other data flows</h2>
+    <p>The app uses private Android app storage. Android Auto Backup is disabled; the configured transfer rules also exclude app data from cloud backup and device migration. This describes the app configuration, not the behaviour of separate system providers.</p>
+    <p>The local WebView blocks network traffic and loads only bundled files. The current app contains no advertising, analytics, tracking libraries, accounts or upload features of its own. No app-written location logging statements were found in the app code. This does not describe logs maintained by Android or its providers.</p>
+    <p>We make no unverified promise about encryption, storage or onward disclosure by a Geocoder or location provider.</p>
+  </section>
+  <section id="support">
+    <h2>7. Support messages</h2>
+    <p>When you email us, you voluntarily provide your email address, the content of your message and any name or attachments you include. We use support messages solely to handle questions, reports and any follow-up. Please provide only information needed for that purpose.</p>
+    <p>We retain this correspondence for no more than <strong>12 months after the last correspondence</strong>, unless a legal obligation requires longer retention. You can request deletion of your correspondence at <a href="mailto:tobieapps.support@proton.me">tobieapps.support@proton.me</a>. A legal retention obligation may prevent complete deletion.</p>
+    <p>This is the retention policy to be followed by Tobie Apps; it is not an automatic deletion feature enforced by JaarZon. Clearing app data does not delete email correspondence.</p>
+    <p>Support is handled through our Proton email address. Your own email provider and Proton are involved in sending and receiving messages. See <a href="https://proton.me/legal/privacy">Proton’s privacy information</a> for processing by that service. We make no unverified promises about email providers’ transport security or retention periods.</p>
+  </section>
+  <section id="rights">
+    <h2>8. Your rights and contact</h2>
+    <p>Depending on applicable law and your circumstances, you may have rights of access, rectification, erasure, restriction, objection and portability. You can revoke your Android location permission at any time. You may also complain to the competent data protection authority.</p>
+    <p>For questions, support and privacy requests, you can contact Tobie Doolaard (Tobie Apps) at <a class="contact" href="mailto:tobieapps.support@proton.me">tobieapps.support@proton.me</a>. You can delete local data as described above; JaarZon provides no feature allowing the developer to remotely inspect or erase your local app storage.</p>
+  </section>
+  <section id="website">
+    <h2>9. This privacy web page</h2>
+    <p>If you visit this page through GitHub Pages, GitHub provides the hosting. The page contains no scripts, analytics, forms or external fonts of its own. GitHub’s processing of website traffic is separate from local app calculations; see <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub’s privacy statement</a>. The exact hosting processing is not a property of the Android source code.</p>
+  </section>
+  <footer>JaarZon · Tobie Apps · <a href="nl.html" lang="nl" hreflang="nl">Nederlandse versie</a> · <a href="#about">Back to top</a></footer>
+</main>
+</body>
+</html>
